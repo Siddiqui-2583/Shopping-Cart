@@ -30,7 +30,7 @@
                            <button id="plus1" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
                         <h5>$ <span id="price1">1219</span></h5>
-                        <img src="images/remove.png" alt="" class="remove-item">
+                        <img id="clearButton1" src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
                </div>
@@ -49,7 +49,7 @@
 
                         </div>
                         <h5>$ <span id="price2">59</span></h5>
-                        <img src="images/remove.png" alt="" class="remove-item">
+                        <img id="clearButton2" src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
                </div>
@@ -88,21 +88,27 @@
       minus1.addEventListener("click",function(){
          updatePrice("noOfProduct1","price1",-1); 
       })
+      clearButton1.addEventListener("click",function(){
+         clearProduct("noOfProduct1","price1");
+      })
       plus2.addEventListener("click",function(){
          updatePrice("noOfProduct2","price2",1); 
       })
       minus2.addEventListener("click",function(){
          updatePrice("noOfProduct2","price2",-1); 
       })
+      clearButton2.addEventListener("click",function(){
+         clearProduct("noOfProduct2","price2");
+      })
+      
 
       function updatePrice(noOfProductId,priceId,sign){
          const noOfProduct = getInputNumber(noOfProductId);
          const productPrice = getSpanNumber(priceId);
          const subtotal = getSpanNumber("subtotal");
-         const unitPrice = productPrice/noOfProduct;
+         const unitPrice = getUnitPrice(noOfProductId,priceId);
          document.getElementById(noOfProductId).value=noOfProduct + sign;
          document.getElementById(priceId).innerText=productPrice + (sign*unitPrice);
-         //document.getElementById(priceId).innerText=productPrice + (sign*unitPrice);
          document.getElementById("subtotal").innerText=subtotal + (sign*unitPrice);
          document.getElementById("total").innerText=subtotal + (sign*unitPrice);
       }
@@ -117,7 +123,22 @@
          const number = parseFloat(String);
          return number;
       }
-      
+      function clearProduct(noOfProductId,priceId){
+         const noOfProduct = getInputNumber(noOfProductId);
+         const productPrice = getSpanNumber(priceId);
+         const subtotal = getSpanNumber("subtotal");
+
+         document.getElementById(noOfProductId).value=0;
+         document.getElementById(priceId).innerText=0;
+         document.getElementById("subtotal").innerText=subtotal - productPrice;
+         document.getElementById("total").innerText=subtotal - productPrice;
+      }
+      function getUnitPrice(noOfProductId,priceId){
+         const noOfProduct = getInputNumber(noOfProductId);
+         const productPrice = getSpanNumber(priceId);
+         const unitPrice = productPrice/noOfProduct;
+         return unitPrice;
+      }
    </script>
 </body>
 
